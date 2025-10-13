@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import React from "react";
+import Header from "./Header";
 
 import { useEffect, useState } from "react";
 
@@ -15,8 +17,11 @@ function App() {
 
   return (
     <div>
-      <h1>Hello from React!</h1>
-      <p>Django says: {data ? data.message : "Loading..."}</p>
+      <Header />
+      <main style={{ padding: "1rem" }}>
+        {/* Your other components or content go here */}
+        <p>Welcome to your car maintenance log app!</p>
+      </main>
     </div>
   );
 }
