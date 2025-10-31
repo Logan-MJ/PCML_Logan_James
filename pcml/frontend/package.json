@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "backend": "python3 ../manage.py runserver",
+    "backend": "python ../manage.py runserver",
     "dev": "concurrently \"npm start\" \"npm run backend\""
   },
   "eslintConfig": {
