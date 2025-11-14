@@ -3,6 +3,8 @@ import './App.css';
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import CarForm from './CarForm';
+import Sidebar from './Sidebar';
+import './Sidebar.css';
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login";
 
@@ -19,14 +21,17 @@ function App() {
   return (
     <div>
       <Header />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={
-          <main style={{ padding: "2rem 1rem", maxWidth: "600px", margin: "0 auto" }}>
-            <CarForm />
-          </main>
-        } />
-      </Routes>
+      <div className="page-body">
+        <Sidebar />
+        <div className="main-content">
+          <div className="main-panel">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<CarForm />} />
+            </Routes>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

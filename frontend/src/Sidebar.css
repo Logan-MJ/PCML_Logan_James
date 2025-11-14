@@ -1,0 +1,22 @@
+.page-body{display:flex;gap:1rem;align-items:flex-start;padding:0 1rem 1rem}
+.sidebar{flex:0 0 220px;max-width:220px;background:linear-gradient(180deg,#2f3337,#3d4046);border-radius:10px;padding:0.8rem;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.12);overflow:hidden;margin-top:0.6rem}
+.weather-card{display:flex;flex-direction:column;gap:0.6rem}
+.weather-title{margin:0;font-size:1.05rem;font-weight:700;color:#fff}
+.weather-location{font-size:0.85rem;color:rgba(255,255,255,0.9);margin-top:4px}
+.weather-list{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.weather-day{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent)}
+.weather-icon{font-size:1.05rem}
+.temp{font-weight:600}
+.temp-min{opacity:0.85;font-weight:400}
+.weather-day .temp{font-weight:700}
+.weather-note{font-size:0.8rem;opacity:0.85;margin-top:8px;color:rgba(255,255,255,0.9)}
+
+/* make layout responsive */
+@media (max-width:720px){
+  .page-body{flex-direction:column;padding:0 0.8rem 0.8rem}
+  .sidebar{max-width:100%;flex:0 0 auto}
+}
+
+/* main content area styles (kept here so Sidebar.css import is enough) */
+.main-content{flex:1;min-width:0;padding:1rem 0}
+.main-panel{max-width:640px;margin:0 auto}
