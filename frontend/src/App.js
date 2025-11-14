@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React from "react";
 import Header from "./Header";
+import CarForm from './CarForm';
 
 import { useEffect, useState } from "react";
 
@@ -21,6 +22,7 @@ function App() {
       <main style={{ padding: "1rem" }}>
         {/* Your other components or content go here */}
         <p>Welcome to your car maintenance log app!</p>
+        <CarForm />
       </main>
     </div>
   );
