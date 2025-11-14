@@ -1,10 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import CarForm from './CarForm';
-
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Login from "./Login";
 
 function App() {
   const [data, setData] = useState(null);
@@ -19,11 +19,14 @@ function App() {
   return (
     <div>
       <Header />
-      <main style={{ padding: "1rem" }}>
-        {/* Your other components or content go here */}
-        <p>Welcome to your car maintenance log app!</p>
-        <CarForm />
-      </main>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={
+          <main style={{ padding: "2rem 1rem", maxWidth: "600px", margin: "0 auto" }}>
+            <CarForm />
+          </main>
+        } />
+      </Routes>
     </div>
   );
 }
