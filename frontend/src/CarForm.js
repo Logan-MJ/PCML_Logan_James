@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './CarForm.css';
 
 function CarForm() {
-  // Initial state matches the Car model fields (except id)
   const [formData, setFormData] = useState({
     make: '',
     model: '',
@@ -11,8 +10,6 @@ function CarForm() {
   });
 
   const [errors, setErrors] = useState(null);
-
-  // This handler is generic and works for all inputs
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -25,26 +22,23 @@ function CarForm() {
     setErrors(null);
 
     try {
-      // POST to your new 'api/cars/' endpoint
       const response = await fetch('http://127.0.0.1:8000/garage/api/cars/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Add CSRF token header if needed
         },
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        setErrors(errorData); // Set validation errors from Django
+        setErrors(errorData);
         throw new Error('Server responded with an error');
       }
 
       const result = await response.json();
       console.log('Successfully created car:', result);
 
-      // Clear the form on success
       setFormData({
         make: '',
         model: '',
