@@ -1,9 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
-
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Login from "./Login";
 
 function App() {
   const [data, setData] = useState(null);
@@ -18,10 +18,14 @@ function App() {
   return (
     <div>
       <Header />
-      <main style={{ padding: "1rem" }}>
-        {/* Your other components or content go here */}
-        <p>Welcome to your car maintenance log app!</p>
-      </main>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={
+          <main style={{ padding: "1rem" }}>
+            <p>Welcome to your car maintenance log app!</p>
+          </main>
+        } />
+      </Routes>
     </div>
   );
 }

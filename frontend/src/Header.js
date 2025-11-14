@@ -1,41 +1,45 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./Header.css";
 
 function Header() {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const stored = localStorage.getItem("pcml_user");
+    if (stored) setUser(stored);
+  }, []);
+
+  function handleLogout() {
+    localStorage.removeItem("pcml_user");
+    setUser(null);
+    navigate("/");
+  }
+
   return (
-    <header style={styles.header}>
-        <div style={styles.left}>
-        <Link to="/" style={styles.homeButton}>🏠 Home</Link>
+    <header className="header">
+      <div className="header_left">
+        <Link to="/" className="btn-link">🏠 Home</Link>
       </div>
-      <h1 style={styles.title}>Car Maintenance Log</h1>
+
+      <h1 className="header_title">
+        <span className="header_title_main">Car Maintenance Log</span>
+        <small className="header_subtitle">Track maintenance, repairs & fuel</small>
+      </h1>
+
+      <div className="header_right">
+        {user ? (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span className="user-greeting">Hi, {user}</span>
+            <button className="logout-btn" onClick={handleLogout}>Logout</button>
+          </div>
+        ) : (
+          <Link to="/login" className="btn-link">🔐 Login</Link>
+        )}
+      </div>
     </header>
   );
 }
-
-const styles = {
-  header: {
-    backgroundColor: "#3d4046ff",
-    color: "white",
-    padding: "1rem",
-    textAlign: "center",
-  },
-  left: {
-    position: "absolute",
-    left: "1rem",
-    textAlign: "center",
-  },
-  homeButton: {
-    backgroundColor: "#3d4046ff",
-    color: "white",
-    padding: "0.4rem 0.8rem",
-    fontSize: "0.9rem",
-  },
-  title: {
-    margin: 0,
-    fontSize: "1.8rem",
-    fontFamily: "Arial, sans-serif",
-    color: "black",
-  },
-};
 
 export default Header;
