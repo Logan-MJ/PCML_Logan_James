@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
+import CarForm from './CarForm';
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login";
 
@@ -23,7 +24,8 @@ function App() {
         <Route path="/" element={
           <main style={{ padding: "1rem" }}>
             <p>Welcome to your car maintenance log app!</p>
-          </main>
+            <CarForm />
+      </main>
         } />
       </Routes>
     </div>
