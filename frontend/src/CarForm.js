@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './CarForm.css';
 
 function CarForm() {
   // Initial state matches the Car model fields (except id)
@@ -57,59 +58,61 @@ function CarForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Add a New Car</h3>
+    <form onSubmit={handleSubmit} className="car-form">
+      <h3 className="car-form-title">Add a New Car</h3>
 
-      <div>
-        <label>Make:</label>
+      <div className="car-form-group">
+        <label className="car-form-label">Make:</label>
         <input
           type="text"
           name="make"
           value={formData.make}
           onChange={handleChange}
+          className="car-form-input"
         />
-        {/* Display validation error for 'make' from DRF */}
-        {errors && errors.make && <p style={{ color: 'red' }}>{errors.make.join(' ')}</p>}
+        {errors && errors.make && <p className="car-form-error">{errors.make.join(' ')}</p>}
       </div>
 
-      <div>
-        <label>Model:</label>
+      <div className="car-form-group">
+        <label className="car-form-label">Model:</label>
         <input
           type="text"
           name="model"
           value={formData.model}
           onChange={handleChange}
+          className="car-form-input"
         />
-        {errors && errors.model && <p style={{ color: 'red' }}>{errors.model.join(' ')}</p>}
+        {errors && errors.model && <p className="car-form-error">{errors.model.join(' ')}</p>}
       </div>
 
-      <div>
-        <label>Year:</label>
+      <div className="car-form-group">
+        <label className="car-form-label">Year:</label>
         <input
-          type="number" // Use type="number" for IntegerField
+          type="number"
           name="year"
           value={formData.year}
           onChange={handleChange}
+          className="car-form-input"
         />
-        {errors && errors.year && <p style={{ color: 'red' }}>{errors.year.join(' ')}</p>}
+        {errors && errors.year && <p className="car-form-error">{errors.year.join(' ')}</p>}
       </div>
 
-      <div>
-        <label>Price:</label>
+      <div className="car-form-group">
+        <label className="car-form-label">Price:</label>
         <input
-          type="number" // Use type="number" for DecimalField
+          type="number"
           name="price"
           value={formData.price}
           onChange={handleChange}
-          step="0.01" // Good practice for decimal fields
+          step="0.01"
+          className="car-form-input"
         />
-        {errors && errors.price && <p style={{ color: 'red' }}>{errors.price.join(' ')}</p>}
+        {errors && errors.price && <p className="car-form-error">{errors.price.join(' ')}</p>}
       </div>
 
-      {/* Display non-field errors (e.g., global validation) */}
-      {errors && errors.non_field_errors && <p style={{ color: 'red' }}>{errors.non_field_errors.join(' ')}</p>}
+      {errors && errors.non_field_errors && <p className="car-form-error">{errors.non_field_errors.join(' ')}</p>}
 
-      <button type="submit">Submit</button>
+      <button type="submit" className="car-form-button">Submit</button>
     </form>
   );
 }

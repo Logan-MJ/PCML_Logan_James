@@ -22,10 +22,9 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={
-          <main style={{ padding: "1rem" }}>
-            <p>Welcome to your car maintenance log app!</p>
+          <main style={{ padding: "2rem 1rem", maxWidth: "600px", margin: "0 auto" }}>
             <CarForm />
-      </main>
+          </main>
         } />
       </Routes>
     </div>

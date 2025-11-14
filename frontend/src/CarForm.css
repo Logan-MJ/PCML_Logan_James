@@ -1,0 +1,73 @@
+.car-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.car-form-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.6rem;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #3d4046;
+  text-align: center;
+}
+
+.car-form-group {
+  display: flex;
+  flex-direction: row;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.car-form-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #3d4046;
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.car-form-input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.95rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.car-form-input:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.car-form-error {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+}
+
+.car-form-button {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background-color: #3d4046;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.car-form-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.car-form-button:active {
+  transform: translateY(0);
+}
