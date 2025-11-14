@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'garage.apps.GarageConfig',
     "corsheaders",
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
