@@ -25,7 +25,7 @@ function Header() {
 
       <h1 className="header_title">
         <span className="header_title_main">Car Maintenance Log</span>
-        <small className="header_subtitle">Track maintenance, repairs & fuel</small>
+        <small className="header_subtitle">Track maintenance, repairs & mileage</small>
       </h1>
 
       <div className="header_right">

@@ -6,6 +6,5 @@ urlpatterns = [
 ]
 
 urlpatterns = [
-    # This one endpoint handles GET (list cars) and POST (create car)
     path('api/cars/', views.CarListCreateView.as_view(), name='car-list-create'),
 ]
