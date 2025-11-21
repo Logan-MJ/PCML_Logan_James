@@ -8,6 +8,8 @@ import './Sidebar.css';
 import { Routes, Route, Outlet } from "react-router-dom";
 import Login from "./Login";
 import CarList from './CarList';
+import HelpPage from './HelpPage';
+import Dashboard from './Dashboard';
 
 function NotFound() {
   return (
@@ -26,8 +28,7 @@ function Layout() {
         <Sidebar />
         <div className="main-content">
           <div className="main-panel">
-            <Outlet />
-            <CarList />
+            <Outlet /> 
           </div>
         </div>
       </div>
@@ -49,9 +50,9 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<CarForm />} />
+        <Route path="/" element={<Dashboard />} />
       </Route>
-
+      <Route path="/help" element={<HelpPage />} /> 
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

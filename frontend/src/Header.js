@@ -21,6 +21,7 @@ function Header() {
     <header className="header">
       <div className="header_left">
         <Link to="/" className="btn-link">🏠 Home</Link>
+        <Link to="/help" className="btn-link" style={{ marginLeft: "15px" }}>❓ Help</Link>
       </div>
 
       <h1 className="header_title">
