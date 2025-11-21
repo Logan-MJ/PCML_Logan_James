@@ -25,7 +25,7 @@ function Login() {
           <button type="submit" style={{ padding: "0.45rem 0.9rem" }}>Login</button>
         </div>
       </form>
-      <p style={{ marginTop: "1rem" }}>This is a simple demo login that stores a username in localStorage.</p>
+      <p style={{ marginTop: "1rem" }}></p>
     </main>
   );
 }
