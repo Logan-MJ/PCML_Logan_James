@@ -40,6 +40,15 @@ const HelpPage = () => {
 
             </section>
 
+            <hr/>
+            
+            <section>
+                <h2>3. Weather Report</h2>
+                <p>
+                    The weather API will use your current location to automatically display weather results for the upcoming week to assist you in planning your next car maintenance.
+                </p>
+            </section>
+
     
         </div>
         </div>

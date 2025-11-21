@@ -1,13 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import CarForm from './CarForm';
 import Sidebar from './Sidebar';
 import './Sidebar.css';
 import { Routes, Route, Outlet } from "react-router-dom";
 import Login from "./Login";
-import CarList from './CarList';
 import HelpPage from './HelpPage';
 import Dashboard from './Dashboard';
 
