@@ -7,6 +7,7 @@ import Sidebar from './Sidebar';
 import './Sidebar.css';
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login";
+import CarList from './CarList';
 
 function App() {
   const [data, setData] = useState(null);
@@ -29,6 +30,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<CarForm />} />
             </Routes>
+            <CarList />
           </div>
         </div>
       </div>
