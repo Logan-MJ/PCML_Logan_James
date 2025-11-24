@@ -1,10 +1,74 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .pagination import StandardResultsPagination
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 
-from rest_framework import generics, filters
-from .models import Car
-from .serializers import CarSerializer
+from rest_framework import generics, filters, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+# Assuming these imports exist in your project structure:
+from .pagination import StandardResultsPagination 
+from .models import Car 
+from .serializers import CarSerializer, UserLoginSerializer # UserLoginSerializer is new
+
+# --- HTML VIEWS (Protected Content) ---
+
+@login_required
+def garage_home(request):
+    """
+    Main dashboard view for the logged-in user's garage. 
+    This is what the browser hits after successful login/redirect.
+    """
+    context = {
+        'username': request.user.username,
+    }
+    return render(request, 'garage/home.html', context)
+
+# --- API VIEWS (Authentication - For React Frontend) ---
+
+@method_decorator(ensure_csrf_cookie, name='dispatch') 
+class LoginAPIView(APIView):
+    """
+    Handles API login requests from the React frontend.
+    On success, it establishes a session and sets the CSRF cookie.
+    """
+    def post(self, request):
+        serializer = UserLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data['username']
+            password = serializer.validated_data['password']
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user) 
+                return Response(
+                    {'message': 'Login successful', 'username': user.username}, 
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    {'error': 'Invalid Credentials (Username or Password)'}, 
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LogoutAPIView(APIView):
+    """
+    Handles API logout requests from the React frontend.
+    Destroys the current session.
+    """
+    def post(self, request):
+        if request.user.is_authenticated:
+            logout(request)
+            return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Already logged out'}, status=status.HTTP_200_OK)
+
+
+# --- API VIEWS (Your Existing Car Endpoints) ---
 
 def hello(request):
     return JsonResponse({"message": "Hello from Django!"})

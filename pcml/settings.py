@@ -134,4 +134,19 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+CSRF_COOKIE_NAME = "csrftoken"
+SESSION_COOKIE_DOMAIN = 'localhost'
+
+# --- AUTHENTICATION SETTINGS ---
+# URL to redirect to after successful login (e.g., the home page)
+LOGIN_REDIRECT_URL = '/'
+
+# URL to redirect to after successful logout (e.g., the login page)
+LOGOUT_REDIRECT_URL = '/login/'

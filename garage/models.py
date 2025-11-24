@@ -1,32 +1,42 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User # Import the built-in User model
 
-# Create your models here.
+# 1. Dealership Model
+# This model is owned by a User and will act as a container for Cars.
+class Dealership(models.Model):
+    # Link to the built-in Django User model (one-to-many: one user can own many dealerships)
+    # If the user is deleted, all their dealerships are deleted (CASCADE).
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, blank=True)
 
-# class UserProfile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.user.username
-
-# class Dealership(models.Model):
-#     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-#     name = models.CharField(max_length=255)
-#     location = models.CharField(max_length=255, blank=True)
-
-#     def __str__(self):
-#         return self.name
+    class Meta:
+        verbose_name_plural = "Dealerships"
     
+    def __str__(self):
+        return self.name
+    
+# 2. Car Model (Updated)
 class Car(models.Model):
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    # dealership = models.ForeignKey(Dealership, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    # Link to the Dealership model (many-to-one: many cars can belong to one dealership)
+    # If the dealership is deleted, the 'dealership' field on the car is set to NULL.
+    dealership = models.ForeignKey(
+        Dealership, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='cars' # Optional: allows easy access from Dealership object: dealership_obj.cars.all()
+    )
     
     def __str__(self):
-        return str(self.year) + " " + self.make + " " + self.model
+        return f"{self.year} {self.make} {self.model}"
 
+# 3. MaintenanceEvent Model (Unchanged)
 class MaintenanceEvent(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     odometer = models.IntegerField()
@@ -34,4 +44,4 @@ class MaintenanceEvent(models.Model):
     description = models.CharField(max_length=100)
 
     def __str__(self):
-        return str(self.event_date) + " " + self.description
+        return f"{self.event_date} - {self.description}"
