@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
-
-// The URL of your Django API login endpoint
+import { useNavigate } from 'react-router-dom';
 const API_LOGIN_URL = 'http://localhost:8000/garage/api/login/';
-
-// Function to safely get a cookie value by name
 const getCookie = (name) => {
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
             if (cookie.startsWith(name + '=')) {
                 return decodeURIComponent(cookie.substring(name.length + 1));
             }
@@ -17,20 +13,17 @@ const getCookie = (name) => {
     }
     return null;
 }
-
-// Main Login Component
 const Login = ({ onLoginSuccess }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
         setLoading(true);
-
-        // 1. Get CSRF Token (Django sets a csrftoken cookie which must be read and sent back)
         const csrftoken = getCookie('csrftoken');
 
         if (!csrftoken) {
@@ -44,25 +37,23 @@ const Login = ({ onLoginSuccess }) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 2. IMPORTANT: Send the CSRF token in the header
                     'X-CSRFToken': csrftoken, 
                 },
                 body: JSON.stringify({ username, password }),
-                // 3. VITAL: This allows the browser to send the session cookie across origins (localhost:3000 -> localhost:8000)
                 credentials: 'include', 
             });
 
             if (response.ok) {
-                // Login successful. Django has set the session cookie in the browser.
                 const data = await response.json();
                 console.log("Login successful:", data.message);
                 
-                // Call the parent function to update the app state (e.g., redirect to dashboard)
                 if (onLoginSuccess) {
                     onLoginSuccess(data.username);
                 }
+                setUsername('');
+                setPassword('');
+                navigate('/', { replace: true });
             } else {
-                // Handle authentication failure (401 Unauthorized) or validation errors (400 Bad Request)
                 const errorData = await response.json();
                 const errorMessage = errorData.error || errorData.detail || 'Login failed. Check username and password.';
                 setError(errorMessage);

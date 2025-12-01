@@ -2,9 +2,10 @@ from rest_framework import serializers
 from .models import Car
 
 class CarSerializer(serializers.ModelSerializer):
+    dealership = serializers.StringRelatedField()
     class Meta:
         model = Car
-        fields = ['id', 'make', 'model', 'year', 'price']
+        fields = ['id', 'make', 'model', 'year', 'price', 'dealership']
 
 class UserLoginSerializer(serializers.Serializer):
     """

@@ -8,6 +8,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import generics, filters, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated # New Import
 
 # Assuming these imports exist in your project structure:
 from .pagination import StandardResultsPagination 
@@ -67,6 +68,18 @@ class LogoutAPIView(APIView):
             return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
         return Response({'message': 'Already logged out'}, status=status.HTTP_200_OK)
 
+class AuthStatusAPIView(APIView):
+    """
+    Checks if the session is currently active.
+    Returns 200 OK and username if logged in, 401 Unauthorized otherwise.
+    """
+    permission_classes = [IsAuthenticated] # Ensures only authenticated users can access
+
+    def get(self, request):
+        return Response({
+            'message': 'Authenticated',
+            'username': request.user.username,
+        }, status=status.HTTP_200_OK)
 
 # --- API VIEWS (Your Existing Car Endpoints) ---
 
@@ -83,7 +96,22 @@ class CarListCreateView(generics.ListCreateAPIView):
     search_fields = ['make', 'model', 'year']
 
 class CarListView(generics.ListAPIView):
-    queryset = Car.objects.all()
+    # We no longer need 'queryset = Car.objects.all()' here because we override get_queryset()
     serializer_class = CarSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['make', 'model', 'year']
+    
+    # 1. Require Authentication (Essential for accessing request.user)
+    permission_classes = [IsAuthenticated] 
+    
+    # 2. Overriding the queryset to filter by user's dealerships
+    def get_queryset(self):
+        # The user object is available because of the IsAuthenticated permission class
+        user = self.request.user
+        
+        # We need to filter cars where the dealership's owner is the current user.
+        # Lookup Path: Car -> dealership (FK) -> owner (FK to User)
+        return Car.objects.filter(dealership__owner=user)
+        
+    # 3. Add Pagination (Fixes your pagination issue, as discussed previously)
+    pagination_class = StandardResultsPagination

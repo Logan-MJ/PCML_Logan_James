@@ -20,4 +20,6 @@ urlpatterns = [
     
     # 5. API ENDPOINT for React Logout
     path('api/logout/', views.LogoutAPIView.as_view(), name='api_logout'),
+
+    path('api/status/', views.AuthStatusAPIView.as_view(), name='api_status'),
 ]

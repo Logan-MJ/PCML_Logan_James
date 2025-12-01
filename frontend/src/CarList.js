@@ -16,7 +16,10 @@ const CarList = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, {
+                method: 'GET',
+                credentials: 'include', 
+            });
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -68,6 +71,11 @@ const CarList = () => {
                         {cars.map(car => (
                             <li key={car.id}>
                                 {car.make} {car.model} ({car.year})
+                                {car.dealership && (
+                                    <span style={{ marginLeft: '10px', color: 'gray' }}>
+                                        ({car.dealership})
+                                    </span>
+                                )}
                             </li>
                         ))}
                     </ul>

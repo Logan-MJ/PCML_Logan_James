@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import './CarForm.css';
 
+const getCookie = (name) => {
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        }
+    }
+    return null;
+}
+
 function CarForm() {
   const [formData, setFormData] = useState({
     make: '',
