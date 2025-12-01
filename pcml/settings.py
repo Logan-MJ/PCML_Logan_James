@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+ENVIRONMENT = os.getenv("DJANGO_ENV", "production")
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -78,12 +80,26 @@ WSGI_APPLICATION = 'pcml.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+import dj_database_url
+
+if ENVIRONMENT == "production":
+    DATABASES = {
+        "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
@@ -150,19 +166,3 @@ LOGIN_REDIRECT_URL = '/'
 
 # URL to redirect to after successful logout (e.g., the login page)
 LOGOUT_REDIRECT_URL = '/login/'
-
-ENVIRONMENT = os.getenv("DJANGO_ENV", "production")
-
-import dj_database_url
-
-if ENVIRONMENT == "production":
-    DATABASES = {
-        "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
