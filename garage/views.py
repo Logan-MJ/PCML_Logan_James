@@ -8,7 +8,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import generics, filters, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated # New Import
+from rest_framework.permissions import IsAuthenticated, BasePermission # New Import
 
 # Assuming these imports exist in your project structure:
 from .pagination import StandardResultsPagination 
@@ -16,7 +16,7 @@ from .models import Car
 from .serializers import CarSerializer, UserLoginSerializer # UserLoginSerializer is new
 
 # --- HTML VIEWS (Protected Content) ---
-
+    
 @login_required
 def garage_home(request):
     """
@@ -80,6 +80,7 @@ class AuthStatusAPIView(APIView):
             'message': 'Authenticated',
             'username': request.user.username,
         }, status=status.HTTP_200_OK)
+    
 
 # --- API VIEWS (Your Existing Car Endpoints) ---
 
@@ -115,3 +116,18 @@ class CarListView(generics.ListAPIView):
         
     # 3. Add Pagination (Fixes your pagination issue, as discussed previously)
     pagination_class = StandardResultsPagination
+
+class CarDetailDestroyView(generics.RetrieveDestroyAPIView):
+    """
+    Handles GET (retrieve) and DELETE (destroy) operations for a single Car instance.
+    """
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    
+    # Require authentication and ensure the user owns the car they are trying to delete.
+    permission_classes = [IsAuthenticated] 
+    
+    # Optional: Override the queryset to limit checks to the user's cars for security/efficiency
+    def get_queryset(self):
+        user = self.request.user
+        return Car.objects.filter(dealership__owner=user)

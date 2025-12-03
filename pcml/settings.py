@@ -154,7 +154,8 @@ SESSION_COOKIE_DOMAIN = 'localhost'
 
 # --- AUTHENTICATION SETTINGS ---
 # URL to redirect to after successful login (e.g., the home page)
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/admin/'
 
 # URL to redirect to after successful logout (e.g., the login page)
-LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_URL = 'login'
