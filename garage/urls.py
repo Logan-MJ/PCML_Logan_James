@@ -14,6 +14,8 @@ urlpatterns = [
     # the exact same path. I've kept both for now based on your previous content.
     path('cars/list_create/', views.CarListCreateView.as_view(), name='car-list-create'),
     path('cars/', views.CarListView.as_view(), name='car-list'),
+
+    path('cars/<int:pk>/', views.CarDetailDestroyView.as_view(), name='car-detail-destroy'),
     
     # 4. API ENDPOINT for React Login
     path('api/login/', views.LoginAPIView.as_view(), name='api_login'),

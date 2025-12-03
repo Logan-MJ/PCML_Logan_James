@@ -23,16 +23,21 @@ class Car(models.Model):
     year = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     
-    # Link to the Dealership model (many-to-one: many cars can belong to one dealership)
-    # If the dealership is deleted, the 'dealership' field on the car is set to NULL.
+    # Link to the Dealership model
     dealership = models.ForeignKey(
         Dealership, 
         on_delete=models.SET_NULL, 
         null=True, 
         blank=True,
-        related_name='cars' # Optional: allows easy access from Dealership object: dealership_obj.cars.all()
+        related_name='cars'
     )
     
+    # --- ADD THIS Meta CLASS ---
+    class Meta:
+        # Define a default sort order. Sort by year descending (-year) 
+        # and then by make ascending (make) for consistency.
+        ordering = ['-year', 'make'] 
+        
     def __str__(self):
         return f"{self.year} {self.make} {self.model}"
 

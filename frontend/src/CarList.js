@@ -1,5 +1,5 @@
-// src/components/CarList.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import CarItem from './CarItem'; // <--- NEW: Import the CarItem component
 
 const CarList = () => {
     const [cars, setCars] = useState([]);
@@ -12,16 +12,24 @@ const CarList = () => {
 
     const INITIAL_URL = 'http://localhost:8000/garage/cars/';
 
-    const fetchCars = async (url) => {
+    const fetchCars = useCallback(async (url) => { // Use useCallback for fetchCars
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch(url, {
+            // NOTE: We replace the full URL if pagination links are used, 
+            // but if the URL is relative, prepend the host. Your setup looks right.
+            const fetchUrl = url.includes('http') ? url : url; 
+            
+            const response = await fetch(fetchUrl, {
                 method: 'GET',
                 credentials: 'include', 
             });
             
             if (!response.ok) {
+                // If 401 Unauthorized occurs, it means the user session expired
+                if (response.status === 401) {
+                    throw new Error("Session expired or unauthorized. Please log in.");
+                }
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
@@ -36,12 +44,19 @@ const CarList = () => {
             setLoading(false);
             console.error('Fetching error:', err);
         }
-    };
+    }, []); // Empty dependency array for useCallback
 
     useEffect(() => {
         const searchUrl = `${INITIAL_URL}?search=${encodeURIComponent(searchTerm)}`;
         fetchCars(searchUrl);
-    }, [searchTerm]);
+    }, [searchTerm, fetchCars]); // Include fetchCars in dependencies
+
+    // --- NEW: Function to update state after a successful delete ---
+    const handleCarDeleteSuccess = useCallback((deletedCarId) => {
+        // Filter out the car with the matching ID from the state array
+        setCars(prevCars => prevCars.filter(car => car.id !== deletedCarId));
+    }, []);
+    // -----------------------------------------------------------------
 
     return (
         <div className="car-list-container">
@@ -67,16 +82,15 @@ const CarList = () => {
             ) : (
                 <>
                     {Array.isArray(cars) && cars.length > 0 ? (
-                    <ul>
+                    <ul style={{ listStyle: 'none', padding: 0 }}>
                         {cars.map(car => (
-                            <li key={car.id}>
-                                {car.make} {car.model} ({car.year})
-                                {car.dealership && (
-                                    <span style={{ marginLeft: '10px', color: 'gray' }}>
-                                        ({car.dealership})
-                                    </span>
-                                )}
-                            </li>
+                            // --- NEW: Use CarItem component and pass the handler ---
+                            <CarItem 
+                                key={car.id} 
+                                car={car} 
+                                onDeleteSuccess={handleCarDeleteSuccess} 
+                            />
+                            // ----------------------------------------------------
                         ))}
                     </ul>
                     ) : (
