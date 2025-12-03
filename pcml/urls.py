@@ -24,7 +24,7 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # NEW: Includes all standard authentication URLs (e.g., /login/, /logout/, /password_reset/)
+    # Includes all standard authentication URLs (e.g., /accounts/login/, /accounts/logout/, etc.)
     path('accounts/', include('django.contrib.auth.urls')),
     
     # Your app URLs

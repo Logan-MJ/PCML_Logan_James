@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
-ENVIRONMENT = os.getenv("DJANGO_ENV", "production")
+ENVIRONMENT = os.getenv("DJANGO_ENV", "development")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,13 +49,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = 'pcml.urls'
@@ -158,4 +158,6 @@ LOGIN_REDIRECT_URL = '/admin/'
 
 # URL to redirect to after successful logout (e.g., the login page)
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+# URL for @login_required redirects (must match your urls.py pattern)
 LOGIN_URL = 'login'
