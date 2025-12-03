@@ -24,13 +24,13 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # NEW: Includes all standard authentication URLs (e.g., /login/, /logout/, /password_reset/)
-    path('', include('django.contrib.auth.urls')),
+    # Includes all standard authentication URLs (e.g., /accounts/login/, /accounts/logout/, etc.)
+    path('accounts/', include('django.contrib.auth.urls')),
     
     # Your app URLs
     path('garage/', include('garage.urls')),
     
     # Redirects the root path (/) to /garage/
-    path('', RedirectView.as_view(url='garage/')),
+    path('', RedirectView.as_view(url='garage/', permanent=False)),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
