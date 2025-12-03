@@ -150,7 +150,7 @@ CSRF_TRUSTED_ORIGINS = [
     APP_URL,
 ]
 CSRF_COOKIE_NAME = "csrftoken"
-SESSION_COOKIE_DOMAIN = 'localhost'
+SESSION_COOKIE_DOMAIN = os.getenv('SESSION_COOKIE_DOMAIN', None)
 
 # --- AUTHENTICATION SETTINGS ---
 # URL to redirect to after successful login (e.g., the home page)
