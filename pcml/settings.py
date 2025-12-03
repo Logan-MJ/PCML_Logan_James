@@ -28,7 +28,8 @@ SECRET_KEY = 'django-insecure-w=q(_mzihh-2#=vh33^7#!g**)o@9irx#0=75)^-c$zam1jrx9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ENVIRONMENT != "production"
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+# settings.py
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 
 # Application definition
@@ -80,26 +81,14 @@ WSGI_APPLICATION = 'pcml.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 import dj_database_url
 
-if ENVIRONMENT == "production":
-    DATABASES = {
-        "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        conn_max_age=600
+    )
+}
 
 
 # Password validation
@@ -150,12 +139,15 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+APP_URL = os.getenv("APP_URL", "http://localhost:3000")
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    APP_URL,
 ]
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    APP_URL,
 ]
 CSRF_COOKIE_NAME = "csrftoken"
 SESSION_COOKIE_DOMAIN = 'localhost'
