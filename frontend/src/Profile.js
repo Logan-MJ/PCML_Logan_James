@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Login from './Login';
 
 const API_PROFILE_URL = 'http://localhost:8000/garage/api/profile/';
 
@@ -19,8 +20,10 @@ function Profile() {
   const [profile, setProfile] = useState({ username: '', first_name: '', last_name: '', email: '', bio: '', profile_image: null });
   const [message, setMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const user = localStorage.getItem('pcml_user');
 
   useEffect(() => {
+    if (!user) return; // don't run fetch when not authenticated
     let mounted = true;
 
     async function fetchProfile() {
@@ -28,14 +31,14 @@ function Profile() {
         const res = await fetch(API_PROFILE_URL, { credentials: 'include' });
         if (res.ok) {
           const data = await res.json();
-            if (mounted) {
-              // API may return profile_image and user fields; preserve local bio if present
-              const stored = JSON.parse(localStorage.getItem('pcml_profile') || 'null') || {};
-              const merged = { bio: stored.bio || '', profile_image: data.profile_image || stored.profile_image || null, ...data };
-              setProfile(merged);
-              localStorage.setItem('pcml_profile', JSON.stringify(merged));
-              if (data.username) localStorage.setItem('pcml_user', data.username);
-            }
+          if (mounted) {
+            // API may return profile_image and user fields; preserve local bio if present
+            const stored = JSON.parse(localStorage.getItem('pcml_profile') || 'null') || {};
+            const merged = { bio: stored.bio || '', profile_image: data.profile_image || stored.profile_image || null, ...data };
+            setProfile(merged);
+            localStorage.setItem('pcml_profile', JSON.stringify(merged));
+            if (data.username) localStorage.setItem('pcml_user', data.username);
+          }
           return;
         }
       } catch (e) {
@@ -54,7 +57,7 @@ function Profile() {
     fetchProfile();
 
     return () => { mounted = false };
-  }, []);
+  }, [user]);
 
   function handleChange(e) {
     const { name, value } = e.target;

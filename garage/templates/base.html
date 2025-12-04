@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Car Maintenance App{% endblock %}</title>
+    <title>{% block title %}Garage Manager{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 <body class="bg-gray-50 min-h-screen">
     <header class="bg-white shadow-sm">
         <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="{% url 'garage_home' %}" class="text-xl font-semibold">Car Maintenance</a>
+            <a href="{% url 'garage_home' %}" class="text-xl font-semibold">Garage Manager</a>
             <nav>
                 {% if user.is_authenticated %}
                     <span class="mr-4">Hello, {{ user.username }}</span>
@@ -28,7 +28,7 @@
     </main>
 
     <footer class="max-w-4xl mx-auto px-4 py-6 text-sm text-gray-500">
-        <p>&copy; {% now "Y" %} Car Maintenance App</p>
+        <p>&copy; {% now "Y" %} Garage Manager</p>
     </footer>
 </body>
 </html>

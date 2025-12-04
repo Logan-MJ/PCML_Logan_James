@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  margin-bottom: 1.5rem;
 }
 
 .car-form-title {

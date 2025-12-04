@@ -41,8 +41,8 @@ function Header() {
       </div>
 
       <h1 className="header_title">
-        <span className="header_title_main">Car Maintenance Log</span>
-        <small className="header_subtitle">Track maintenance, repairs & mileage</small>
+        <span className="header_title_main">Garage Manager</span>
+        <small className="header_subtitle">Manage cars in your garage or dealership</small>
       </h1>
 
       <div className="header_right">
