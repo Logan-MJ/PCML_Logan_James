@@ -9,10 +9,26 @@ function Header() {
   useEffect(() => {
     const stored = localStorage.getItem("pcml_user");
     if (stored) setUser(stored);
+
+    const onLogin = (e) => {
+      setUser(e?.detail || localStorage.getItem('pcml_user'));
+    };
+    const onLogout = () => {
+      setUser(null);
+    };
+
+    window.addEventListener('pcml_login', onLogin);
+    window.addEventListener('pcml_logout', onLogout);
+    return () => {
+      window.removeEventListener('pcml_login', onLogin);
+      window.removeEventListener('pcml_logout', onLogout);
+    };
   }, []);
 
   function handleLogout() {
     localStorage.removeItem("pcml_user");
+    // keep profile but clear user flag
+    window.dispatchEvent(new Event('pcml_logout'));
     setUser(null);
     navigate("/");
   }
@@ -33,6 +49,7 @@ function Header() {
         {user ? (
           <div style={{ display: "flex", alignItems: "center" }}>
             <span className="user-greeting">Hi, {user}</span>
+            <Link to="/profile" className="btn-link" style={{ marginLeft: 12, marginRight: 8 }}>👤 Profile</Link>
             <button className="logout-btn" onClick={handleLogout}>Logout</button>
           </div>
         ) : (

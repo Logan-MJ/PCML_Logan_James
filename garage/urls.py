@@ -24,4 +24,8 @@ urlpatterns = [
     path('api/logout/', views.LogoutAPIView.as_view(), name='api_logout'),
 
     path('api/status/', views.AuthStatusAPIView.as_view(), name='api_status'),
+    # Simple about page using Django templates and base.html
+    path('about/', views.about, name='about'),
+    # Profile API for frontend persistence
+    path('api/profile/', views.ProfileAPIView.as_view(), name='api_profile'),
 ]

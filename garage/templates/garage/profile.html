@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Profile{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h1 class="text-2xl font-bold mb-4">Your Profile</h1>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="mb-4 text-sm text-green-700">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">First name</label>
+        {{ form.first_name }}
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Last name</label>
+        {{ form.last_name }}
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Email</label>
+        {{ form.email }}
+      </div>
+
+      <div>
+        <button type="submit" class="py-2 px-4 bg-indigo-600 text-white rounded">Save</button>
+        <a href="{% url 'garage_home' %}" class="ml-3 text-sm text-gray-600">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

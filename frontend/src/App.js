@@ -7,6 +7,7 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import Login from "./Login";
 import HelpPage from './HelpPage';
 import Dashboard from './Dashboard';
+import Profile from './Profile';
 
 
 function NotFound() {
@@ -48,6 +49,7 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/" element={<Dashboard />} />
       </Route>
       <Route path="/help" element={<HelpPage />} /> 

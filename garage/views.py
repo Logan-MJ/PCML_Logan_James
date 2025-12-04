@@ -9,11 +9,14 @@ from rest_framework import generics, filters, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, BasePermission # New Import
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 # Assuming these imports exist in your project structure:
 from .pagination import StandardResultsPagination 
-from .models import Car 
+from .models import Car, Profile
 from .serializers import CarSerializer, UserLoginSerializer # UserLoginSerializer is new
+from .serializers import UserSerializer
 
 # --- HTML VIEWS (Protected Content) ---
     
@@ -86,6 +89,66 @@ class AuthStatusAPIView(APIView):
 
 def hello(request):
     return JsonResponse({"message": "Hello from Django!"})
+
+
+class ProfileAPIView(APIView):
+    """
+    Retrieve or update the authenticated user's profile.
+    Supports multipart/form-data for image uploads.
+    """
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+    def get(self, request):
+        user = request.user
+        # Ensure profile exists
+        profile, _ = Profile.objects.get_or_create(user=user)
+
+        user_data = UserSerializer(user).data
+        # Add profile-specific fields
+        user_data['bio'] = profile.bio
+        user_data['profile_image'] = profile.image.url if profile.image else None
+        return Response(user_data)
+
+    def put(self, request):
+        user = request.user
+        # Ensure Profile exists
+        profile, _ = Profile.objects.get_or_create(user=user)
+
+        # Update user fields via serializer
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+
+            # Update profile fields (bio)
+            bio = request.data.get('bio')
+            if bio is not None:
+                profile.bio = bio
+
+            # Accept file uploads under 'image' or 'profile_picture'
+            upload = None
+            if 'image' in request.FILES:
+                upload = request.FILES['image']
+            elif 'profile_picture' in request.FILES:
+                upload = request.FILES['profile_picture']
+
+            if upload is not None:
+                profile.image = upload
+
+            profile.save()
+
+            # Build response
+            data = serializer.data
+            data['bio'] = profile.bio
+            data['profile_image'] = profile.image.url if profile.image else None
+            return Response(data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def about(request):
+    """Simple informational page to demonstrate template inheritance and shared CSS."""
+    return render(request, 'garage/about.html')
 
 class CarListCreateView(generics.ListCreateAPIView):
     queryset = Car.objects.all()

@@ -46,7 +46,22 @@ const Login = ({ onLoginSuccess }) => {
             if (response.ok) {
                 const data = await response.json();
                 console.log("Login successful:", data.message);
-                
+
+                // Persist basic user info in localStorage for frontend-only profile
+                try {
+                    const existing = JSON.parse(localStorage.getItem('pcml_profile') || 'null');
+                    if (!existing || existing.username !== data.username) {
+                        const profile = { username: data.username, first_name: '', last_name: '', email: '' };
+                        localStorage.setItem('pcml_profile', JSON.stringify(profile));
+                    }
+                } catch (e) {
+                    localStorage.setItem('pcml_profile', JSON.stringify({ username: data.username, first_name: '', last_name: '', email: '' }));
+                }
+
+                // Store a simple flag for header display and notify header via custom event
+                localStorage.setItem('pcml_user', data.username);
+                window.dispatchEvent(new CustomEvent('pcml_login', { detail: data.username }));
+
                 if (onLoginSuccess) {
                     onLoginSuccess(data.username);
                 }
