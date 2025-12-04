@@ -84,45 +84,41 @@ const Login = ({ onLoginSuccess }) => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-2xl border border-gray-200">
-                <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
-                    Sign In
-                </h2>
+                <form onSubmit={handleSubmit} className="car-form">
+                    <h3 className="car-form-title">Sign In</h3>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Username</label>
+                    <div className="car-form-group">
+                        <label className="car-form-label">Username</label>
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
-                            className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            className="car-form-input"
                             placeholder="Enter username"
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Password</label>
+                    <div className="car-form-group">
+                        <label className="car-form-label">Password</label>
                         <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            className="car-form-input"
                             placeholder="Enter password"
                         />
                     </div>
 
                     {error && (
-                        <div className="bg-red-100 text-red-700 p-3 rounded-lg text-sm border border-red-400">
-                            {error}
-                        </div>
+                        <div className="car-form-error">{error}</div>
                     )}
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition"
+                        className="car-form-button"
                     >
                         {loading ? 'Logging in...' : 'Log In'}
                     </button>
