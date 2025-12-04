@@ -11,6 +11,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, BasePermission # New Import
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.permissions import AllowAny
+from django.middleware.csrf import get_token
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 # Assuming these imports exist in your project structure:
 from .pagination import StandardResultsPagination 
@@ -153,13 +157,30 @@ def about(request):
     return render(request, 'garage/about.html')
 
 class CarListCreateView(generics.ListCreateAPIView):
-    queryset = Car.objects.all()
     serializer_class = CarSerializer
     pagination_class = StandardResultsPagination
-    
+
     filter_backends = [filters.SearchFilter]
-    
     search_fields = ['make', 'model', 'year']
+
+    # Only authenticated users should be able to list/create cars
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        # Return cars belonging to dealerships owned by the current user
+        return Car.objects.filter(dealership__owner=user)
+
+    def perform_create(self, serializer):
+        # Attach the new car to one of the current user's dealerships.
+        # If the user has no dealership, create a default one.
+        user = self.request.user
+        from .models import Dealership
+        dealership, _ = Dealership.objects.get_or_create(
+            owner=user,
+            defaults={"name": f"{user.username}'s Dealership"}
+        )
+        serializer.save(dealership=dealership)
 
 class CarListView(generics.ListAPIView):
     # We no longer need 'queryset = Car.objects.all()' here because we override get_queryset()
@@ -196,3 +217,18 @@ class CarDetailDestroyView(generics.RetrieveDestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Car.objects.filter(dealership__owner=user)
+
+
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class CSRFCookieView(APIView):
+    """Return a CSRF token and ensure the CSRF cookie is set for the frontend.
+
+    The React frontend should call this endpoint (with credentials included)
+    before making POST requests so the browser receives the CSRF cookie and
+    the app can read the token from the JSON response to set the header.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        token = get_token(request)
+        return Response({"csrfToken": token})
