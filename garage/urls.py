@@ -12,8 +12,10 @@ urlpatterns = [
     # 3. Existing DRF Car Endpoints
     # NOTE: It's redundant to have two patterns named 'cars/' and 'cars/' but matching 
     # the exact same path. I've kept both for now based on your previous content.
-    path('cars/list_create/', views.CarListCreateView.as_view(), name='car-list-create'),
-    path('cars/', views.CarListView.as_view(), name='car-list'),
+    # `cars/` should allow both listing and creating cars for the frontend
+    path('cars/', views.CarListCreateView.as_view(), name='car-list-create'),
+    # A dedicated endpoint for listing cars scoped to the authenticated user's dealerships
+    path('cars/list/', views.CarListView.as_view(), name='car-list'),
 
     path('cars/<int:pk>/', views.CarDetailDestroyView.as_view(), name='car-detail-destroy'),
     
