@@ -107,7 +107,8 @@ class ProfileAPIView(APIView):
         user_data = UserSerializer(user).data
         # Add profile-specific fields
         user_data['bio'] = profile.bio
-        user_data['profile_image'] = profile.image.url if profile.image else None
+        # Return absolute URL for the profile image so the React frontend can load it
+        user_data['profile_image'] = request.build_absolute_uri(profile.image.url) if profile.image else None
         return Response(user_data)
 
     def put(self, request):
@@ -140,7 +141,8 @@ class ProfileAPIView(APIView):
             # Build response
             data = serializer.data
             data['bio'] = profile.bio
-            data['profile_image'] = profile.image.url if profile.image else None
+            # Return absolute URL for the profile image
+            data['profile_image'] = request.build_absolute_uri(profile.image.url) if profile.image else None
             return Response(data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
