@@ -39,7 +39,7 @@ function App() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/hello/")
+    fetch("http://localhost:8000/api/hello/")
       .then(res => res.json())
       .then(setData)
       .catch(console.error);

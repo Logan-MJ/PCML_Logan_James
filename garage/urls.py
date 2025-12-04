@@ -30,4 +30,6 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     # Profile API for frontend persistence
     path('api/profile/', views.ProfileAPIView.as_view(), name='api_profile'),
+    # CSRF helper endpoint for cross-origin frontend
+    path('api/csrf/', views.CSRFCookieView.as_view(), name='api_csrf'),
 ]

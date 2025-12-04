@@ -35,12 +35,18 @@ function CarForm() {
     setErrors(null);
 
     try {
-      const csrftoken = getCookie('csrftoken');
-      const response = await fetch('http://127.0.0.1:8000/garage/cars/', {
+      // Ensure we fetch a fresh CSRF token (this also sets the csrf cookie)
+      const csrfResp = await fetch('http://localhost:8000/garage/api/csrf/', {
+        method: 'GET',
+        credentials: 'include'
+      });
+      const { csrfToken } = await csrfResp.json();
+
+      const response = await fetch('http://localhost:8000/garage/cars/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': csrftoken || '',
+          'X-CSRFToken': csrfToken || '',
           'Accept': 'application/json'
         },
         credentials: 'include',
