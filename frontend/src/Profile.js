@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Login from './Login';
 
-const API_PROFILE_URL = 'http://localhost:8000/garage/api/profile/';
+const API_PROFILE_URL = '/api/garage/api/profile/';
 
 function getCookie(name) {
   if (document.cookie && document.cookie !== '') {

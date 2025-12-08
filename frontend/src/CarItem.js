@@ -21,7 +21,7 @@ const getCsrfToken = () => {
 
 const CarItem = ({ car, onDeleteSuccess }) => {
     const handleDelete = async (carId) => {
-        const url = `http://localhost:8000/garage/cars/${carId}/`;
+        const url = `/api/garage/cars/${carId}/`;
         const csrfToken = getCsrfToken();
         
         if (!csrfToken) {

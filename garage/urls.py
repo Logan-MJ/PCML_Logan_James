@@ -5,10 +5,7 @@ urlpatterns = [
     # 1. HTML VIEW (Fixes the 404 error for /garage/)
     # This path matches the empty string, completing the route from the project's urls.py
     path('', views.garage_home, name='garage_home'),
-    
-    # 2. Existing simple JSON endpoint
-    path('hello/', views.hello, name='hello'),
-    
+        
     # 3. Existing DRF Car Endpoints
     # NOTE: It's redundant to have two patterns named 'cars/' and 'cars/' but matching 
     # the exact same path. I've kept both for now based on your previous content.

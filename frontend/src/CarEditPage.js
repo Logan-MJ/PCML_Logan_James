@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save } from 'lucide-react';
 
 // Define the root URL that leads to your car endpoints
-// Based on your CarList.js: 'http://localhost:8000/garage/cars/'
-const CARS_API_URL = 'http://localhost:8000/garage'; 
+// Based on your CarList.js: '/api/garage/cars/'
+const CARS_API_URL = '/api/garage'; 
 
 const CarEditPage = () => {
     const { id } = useParams(); 
@@ -21,7 +21,7 @@ const CarEditPage = () => {
             setIsLoading(true);
             setError(null);
             try {
-                // Fetch URL example: http://localhost:8000/garage/cars/1/
+                // Fetch URL example: /api/garage/cars/1/
                 const response = await fetch(`${CARS_API_URL}/cars/${id}/`, { 
                     method: 'GET',
                     credentials: 'include', // Needed for session authentication

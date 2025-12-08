@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-const API_LOGIN_URL = 'http://localhost:8000/garage/api/login/';
+const API_LOGIN_URL = '/api/garage/api/login/';
 const getCookie = (name) => {
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');

@@ -10,7 +10,7 @@ const CarList = () => {
     
     const [searchTerm, setSearchTerm] = useState('');
 
-    const INITIAL_URL = 'http://localhost:8000/garage/cars/';
+    const INITIAL_URL = '/api/garage/cars/';
 
     const fetchCars = useCallback(async (url) => { // Use useCallback for fetchCars
         setLoading(true);

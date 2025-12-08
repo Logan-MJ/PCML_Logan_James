@@ -91,10 +91,6 @@ class AuthStatusAPIView(APIView):
 
 # --- API VIEWS (Your Existing Car Endpoints) ---
 
-def hello(request):
-    return JsonResponse({"message": "Hello from Django!"})
-
-
 class ProfileAPIView(APIView):
     """
     Retrieve or update the authenticated user's profile.
