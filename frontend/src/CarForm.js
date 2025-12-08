@@ -69,6 +69,9 @@ function CarForm() {
         price: '',
       });
 
+      // Dispatch event to refresh the car list
+      window.dispatchEvent(new Event('carAdded'));
+
     } catch (error) {
       console.error('Error submitting form:', error);
     }

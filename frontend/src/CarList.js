@@ -51,7 +51,20 @@ const CarList = () => {
         fetchCars(searchUrl);
     }, [searchTerm, fetchCars]); // Include fetchCars in dependencies
 
-    // --- NEW: Function to update state after a successful delete ---
+    // NEW: Listen for carAdded event to refresh the list
+    useEffect(() => {
+        const handleCarAdded = () => {
+            const searchUrl = `${INITIAL_URL}?search=${encodeURIComponent(searchTerm)}`;
+            fetchCars(searchUrl);
+        };
+
+        window.addEventListener('carAdded', handleCarAdded);
+        
+        return () => {
+            window.removeEventListener('carAdded', handleCarAdded);
+        };
+    }, [searchTerm, fetchCars]);
+    // -----------------------------------------------------------------
     const handleCarDeleteSuccess = useCallback((deletedCarId) => {
         // Filter out the car with the matching ID from the state array
         setCars(prevCars => prevCars.filter(car => car.id !== deletedCarId));
